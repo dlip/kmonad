@@ -7,11 +7,11 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }:
-    let kmonad = import ./kmonad.nix;
+    let kmonad = import ./default.nix;
     in flake-utils.lib.eachDefaultSystem (system:
       let pkgs = nixpkgs.legacyPackages.${system};
       in rec {
-        packages.kmonad = pkgs.haskellPackages.callPackage kmonad { };
+        packages.kmonad = (kmonad { inherit pkgs; }).pkg;
 
         defaultPackage = packages.kmonad;
 
